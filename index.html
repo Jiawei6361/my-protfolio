@@ -580,7 +580,7 @@
             <li>Event Brand Ambassador (1 job)</li>
         </ul>
 
-        <a href="resume.pdf" target="_blank" class="resume-link">View Full Resume <i class="fas fa-arrow-right"></i></a>
+        <a href="https://drive.google.com/file/d/1X1TuXmOQV0NW5gxcCXMaQYymzYe3QmYu/view?usp=drive_link" target="_blank" class="resume-link">View Full Resume <i class="fas fa-arrow-right"></i></a>
     </section>
 
     <section id="cert" class="section">
@@ -674,8 +674,13 @@
             observer.observe(el);
         });
 
-        /* 3. AUTO SCROLL WITH MANUAL OVERRIDE (For Projects & Certs) */
+        /* 3. AUTO SCROLL (DESKTOP ONLY) */
         function setupAutoScroll(containerId) {
+            // === MOBILE FIX ===
+            // If screen is smaller than 900px (Tablets/Phones), STOP auto-scroll.
+            // This allows the user to swipe manually without the code fighting them.
+            if (window.innerWidth < 900) return;
+
             const container = document.getElementById(containerId);
             if (!container) return;
 
@@ -685,9 +690,11 @@
             // Auto Scroll Loop
             function autoScroll() {
                 if (!isPaused) {
-                    // Logic: If scrolled past half the content (duplicates start), reset to 0
+                    // Logic: If we scrolled past the first set of items (halfway)
                     if (container.scrollLeft >= (container.scrollWidth / 2)) {
-                        container.scrollLeft = 0;
+                        // Subtract half the width to snap back to start SEAMLESSLY
+                        // (We use subtraction instead of = 0 to make it smoother)
+                        container.scrollLeft -= (container.scrollWidth / 2);
                     } else {
                         container.scrollLeft += scrollSpeed;
                     }
@@ -697,13 +704,12 @@
             // Run scroll every 20ms
             const scrollInterval = setInterval(autoScroll, 20);
 
-            // Pause on Hover / Touch
+            // Pause on Hover (Desktop Mouse)
             container.addEventListener('mouseenter', () => isPaused = true);
             container.addEventListener('mouseleave', () => isPaused = false);
-            container.addEventListener('touchstart', () => isPaused = true);
-            container.addEventListener('touchend', () => setTimeout(() => isPaused = false, 1000));
         }
 
+        // Initialize scrollers
         setupAutoScroll('projectScroll');
         setupAutoScroll('certScroll');
     </script>
