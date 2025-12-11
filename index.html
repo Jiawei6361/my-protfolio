@@ -1,0 +1,711 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OH JIA WEI | Portfolio</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        /* --- 1. GLOBAL & SCROLLBAR --- */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f5f9;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #64748b;
+            }
+
+        /* --- 2. ANIMATION UTILITIES --- */
+        .hidden {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+
+        .show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* --- 3. NAVIGATION (Glassmorphism) --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+            nav ul {
+                display: flex;
+                gap: 20px;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            nav a {
+                text-decoration: none;
+                color: #334155;
+                font-weight: bold;
+                transition: color 0.3s;
+                white-space: nowrap; /* Prevents text from breaking lines */
+            }
+
+                nav a:hover {
+                    color: #5b21b6;
+                }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            padding: 140px 40px;
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #312e81, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            text-align: center;
+            color: white;
+        }
+
+            .hero h1 {
+                font-size: 3rem;
+                margin: 0;
+            }
+
+        .animate-text {
+            display: inline-block;
+            color: #a78bfa;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .hero p {
+            color: #cbd5e1;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        /* --- 5. SECTIONS --- */
+        .section {
+            padding: 60px 40px;
+            scroll-margin-top: 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #0f172a;
+            border-bottom: 3px solid #a78bfa;
+            padding-bottom: 10px;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        /* --- 6. SKILLS --- */
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            list-style: none;
+            padding: 0;
+        }
+
+            .skill-list li {
+                background: white;
+                padding: 12px 25px;
+                border-radius: 25px;
+                color: #4f46e5;
+                font-weight: bold;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                border: 1px solid #e2e8f0;
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                cursor: default;
+            }
+
+                .skill-list li:hover {
+                    background-color: #4f46e5;
+                    color: white;
+                    transform: scale(1.1) translateY(-3px);
+                    box-shadow: 0 8px 15px rgba(79, 70, 229, 0.3);
+                }
+
+        /* --- 7. AUTO-SCROLL CONTAINER --- */
+        .scroll-container {
+            display: flex;
+            gap: 40px;
+            overflow-x: auto;
+            padding: 20px 5px;
+            scroll-behavior: auto;
+            white-space: nowrap;
+            cursor: grab;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+            .scroll-container::-webkit-scrollbar {
+                display: none;
+            }
+
+            .scroll-container:active {
+                cursor: grabbing;
+            }
+
+        /* --- 8. PROJECT CARDS --- */
+        .project-card {
+            min-width: 450px; /* Desktop size */
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            white-space: normal;
+        }
+
+        .project-img {
+            height: 260px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .project-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.5s ease;
+            }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.1);
+        }
+
+        .project-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #5b21b6;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+            .project-link:hover {
+                background-color: #4338ca;
+            }
+
+        /* --- 9. CERTIFICATES --- */
+        .cert-card {
+            min-width: 350px; /* Desktop Size */
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            white-space: normal;
+        }
+
+            .cert-card img {
+                width: 100%;
+                height: 220px;
+                object-fit: contain;
+                background: #f8fafc;
+                padding: 10px;
+                box-sizing: border-box;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .cert-card p {
+                padding: 15px;
+                margin: 0;
+                font-size: 1rem;
+                color: #64748b;
+            }
+
+        /* --- 10. PHOTOS & OTHERS --- */
+        .photo-grid {
+            column-count: 4;
+            column-gap: 15px;
+        }
+
+        .grid-item {
+            break-inside: avoid;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+            .grid-item:hover {
+                transform: scale(1.02);
+            }
+
+            .grid-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+        .exp-list li, .edu-list li {
+            margin-bottom: 10px;
+            font-size: 1.05rem;
+            position: relative;
+            padding-left: 20px;
+        }
+
+            .exp-list li::before, .edu-list li::before {
+                content: "▹";
+                position: absolute;
+                left: 0;
+                color: #5b21b6;
+            }
+
+        .resume-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #5b21b6;
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: border 0.3s;
+        }
+
+            .resume-link:hover {
+                border-bottom: 2px solid #5b21b6;
+            }
+
+        /* Contact Section */
+        .contact-section {
+            background-color: #0f172a;
+            color: white;
+            padding: 80px 20px 40px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .contact-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+            border: none;
+        }
+
+        .contact-content p {
+            color: #94a3b8;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+            .social-links a {
+                color: #cbd5e1;
+                font-size: 2.5rem;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+                .social-links a:hover {
+                    color: #a78bfa;
+                    transform: translateY(-5px) scale(1.1);
+                }
+
+        .footer-text {
+            color: #475569;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+            padding-top: 30px;
+        }
+
+
+        /* =========================================
+           11. MOBILE RESPONSIVENESS (New Code!)
+           ========================================= */
+
+        @media (max-width: 900px) {
+            .photo-grid {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 600px) {
+            /* 1. Navigation: Stack vertically and make links scrollable */
+            nav {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px 20px;
+                gap: 15px;
+            }
+
+                nav ul {
+                    width: 100%;
+                    overflow-x: auto; /* Allow side scrolling for menu */
+                    padding-bottom: 10px; /* Space for scrollbar */
+                    gap: 20px;
+                }
+
+            /* 2. Hero Section: Reduce padding */
+            .hero {
+                padding: 100px 20px;
+            }
+
+                .hero h1 {
+                    font-size: 2rem; /* Smaller Title */
+                }
+
+            /* 3. Global Padding */
+            .section {
+                padding: 40px 20px;
+            }
+
+            /* 4. Cards: Resize to fit mobile screen */
+            .project-card {
+                min-width: 85vw; /* 85% of phone screen width */
+                padding: 20px;
+            }
+
+            .project-img {
+                height: 180px; /* Smaller image height */
+            }
+
+            .cert-card {
+                min-width: 80vw; /* 80% of phone screen width */
+            }
+
+            /* 5. Photos: Single Column */
+            .photo-grid {
+                column-count: 1;
+            }
+
+            /* 6. Typography adjustments */
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+            }
+
+            p, li {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2 class="logo" style="color: #0f172a; margin: 0;">OH JIA WEI</h2>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#cert">Certificates</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#photos">Photos</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Hello, I'm <span class="animate-text">OH JIA WEI</span></h1>
+        <p>An outgoing learner passionate about cybersecurity and technology.</p>
+    </header>
+
+    <section id="about" class="section">
+        <h2>About Me</h2>
+        <p>
+            I am an outgoing and enthusiastic learner currently pursuing my B.S. in Information System Security. I am a highly self-motivated individual, continuously enhancing both my technical and soft skill sets. With a strong passion for cybersecurity and IT, I thrive in collaborative environments and take initiative in problem-solving. I am eager to contribute, learn, and grow within a forward-thinking organization that values innovation, teamwork, and integrity.
+        </p>
+
+        <h3>Open for internship opportunities: May 2026 – August 2026.</h3>
+
+    </section>
+
+    <section id="skills" class="section">
+        <h2>Skills</h2>
+        <h3>Soft Skills</h3>
+        <ul class="skill-list">
+            <li>Responsible</li>
+            <li>Good Looking (Maybe:)</li>
+            <li>Outgoing</li>
+            <li>Leadership</li>
+            <li>Teamwork</li>
+            <li>Communication</li>
+            <li>Quick Decision Making</li>
+            <li>Self Confidence</li>
+            <li>Social Networking</li>
+        </ul>
+
+        <h3 style="margin-top: 30px;">Hard Skills</h3>
+        <ul class="skill-list">
+            <li>Python</li>
+            <li>Java</li>
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>Ubuntu Linux</li>
+            <li>Rocky Linux</li>
+            <li>Kali Linux</li>
+            <li>Assemble Language</li>
+            <li>Cisco Packet Tracer</li>
+            <li>AWS</li>
+            <li>Java Script</li>
+            <li>R Programming</li>
+            <li>SQL Server Management</li>
+
+        </ul>
+    </section>
+
+    <section id="projects" class="section">
+        <h2>Projects</h2>
+
+        <div class="scroll-container" id="projectScroll">
+
+            
+            <div class="project-card">
+                <div class="project-img"><img src="Screenshot python.png" alt="Python Project"></div>
+                <p style="font-weight: bold;">Python Restaurant System Assignment</p>
+                <a href="https://github.com/Jiawei6361/python-restaurant-system" target="_blank" class="project-link">View in my GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img"><img src="HTML.png" alt="HTML Project"></div>
+                <p style="font-weight: bold;">HTML International Student Club Website Assignment</p>
+                <a href="https://github.com/Jiawei6361/Java-Medical-Center-System-assignment" target="_blank" class="project-link">View in my GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img"><img src="Java.png" alt="Java Project"></div>
+                <p style="font-weight: bold;">Java Medical Center System Assignment</p>
+                <a href="https://github.com/Jiawei6361/HTML-assignment-project" target="_blank" class="project-link">View in my GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img"><img src="Cisco.png" alt="Cisco Project"></div>
+                <p style="font-weight: bold;">Securing NetSecure: Implementing VPN, DMZ, IoT, and Layer 2/3 Security in Packet Tracer</p>
+                <a href="javascript:void(0)" class="project-link" style="background-color: #94a3b8; cursor: default;">Code not available</a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img"><img src="Selfnetwork.jpg" alt="Selfnetwork Project"></div>
+                <p style="font-weight: bold;">Practical Networking Application: Configured home routing, security settings, and troubleshooting connectivity</p>
+                <a href="javascript:void(0)" class="project-link" style="background-color: #94a3b8; cursor: default;">Code not available</a>
+            </div>
+
+            <div class="project-card">
+                <div class="project-img"><img src="Linux.png" alt="Linux Project"></div>
+                <p style="font-weight: bold;">Integrated Network Infrastructure Implementation: Deploying Secure DNS, Email, and Web Services on Rocky and Ubuntu Linux.</p>
+                <a href="javascript:void(0)" class="project-link" style="background-color: #94a3b8; cursor: default;">Code not available</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <h2>Work Experience</h2>
+        <ul class="exp-list">
+            <li>Cafe Waiter (1 job)</li>
+            <li>Event Crew (9 jobs)</li>
+            <li>Promoter (5 jobs)</li>
+            <li>Event Brand Ambassador (1 job)</li>
+        </ul>
+
+        <a href="resume.pdf" target="_blank" class="resume-link">View Full Resume <i class="fas fa-arrow-right"></i></a>
+    </section>
+
+    <section id="cert" class="section">
+        <h2>Certificates</h2>
+
+        <div class="scroll-container" id="certScroll">
+
+            <div class="cert-card">
+                <img src="cert_rh1.png" alt="Red Hat I">
+                <p>Red Hat System Administration I (RH124 - RHA) - Ver. 9.3</p>
+            </div>
+            <div class="cert-card">
+                <img src="cert_rh2.png" alt="Red Hat II">
+                <p>Red Hat System Administration II (RH134 - RHA) - Ver. 9.3</p>
+            </div>
+            <div class="cert-card">
+                <img src="cert_bat.png" alt="Cyber Kampung Certificate">
+                <p>Certificate of Participation - 2025 BAT X APU Cyber Kampung</p>
+            </div>
+            <div class="cert-card">
+                <img src="cert_ai.png" alt="AI Hackathon Certificate">
+                <p>Certificate of Participation - 2025 Great Malaysia AI Hackathon</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="education" class="section">
+        <h2>Education</h2>
+        <ul class="edu-list">
+            <li>Pin Hwa High School — 2018–2023 (6 years)</li>
+            <li>Asia Pacific University — BSc (Hons) ISS — 2023–Present</li>
+        </ul>
+    </section>
+
+    <section id="photos" class="section">
+        <h2>Photo Gallery</h2>
+        <div class="photo-grid">
+            <div class="grid-item"><img src="AWS_hackathon.jpeg" alt="AWS Hackathon"></div>
+            <div class="grid-item"><img src="Climb.jpeg" alt="Interest"></div>
+            <div class="grid-item"><img src="Concert_Jacky.jpeg" alt="Concert Crew"></div>
+            <div class="grid-item"><img src="Shoppe.jpeg" alt="Shoppe Crew"></div>
+            <div class="grid-item"><img src="Suit_job.jpeg" alt="Event Crew"></div>
+            <div class="grid-item"><img src="WhatsApp Image 2025-12-06 at 17.39.13 (1).jpeg" alt="Mascot"></div>
+            <div class="grid-item"><img src="Zus coffee.jpeg" alt="Promoter"></div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-content">
+            <h2>Get In Touch</h2>
+            <p>I'm currently looking for internship opportunities. My inbox is always open, whether you have a question or just want to say hi!</p>
+
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/jia-wei-oh-767043373/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/Jiawei6361" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                <a href="mailto:Ohjiawei548787@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+            </div>
+
+            <div class="footer-text">
+                &copy; 2025 OH JIA WEI. All rights reserved.
+            </div>
+        </div>
+    </section>
+
+    <script>
+        /* 1. SMOOTH SCROLL */
+        document.querySelectorAll("nav a").forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute("href");
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({ behavior: "smooth" });
+                }
+            });
+        });
+
+        /* 2. SCROLL REVEAL (The content fading in) */
+        const observerElements = document.querySelectorAll('.section, .grid-item');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observerElements.forEach((el) => {
+            el.classList.add('hidden');
+            observer.observe(el);
+        });
+
+        /* 3. AUTO SCROLL WITH MANUAL OVERRIDE (For Projects & Certs) */
+        function setupAutoScroll(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let scrollSpeed = 1;
+            let isPaused = false;
+
+            // Auto Scroll Loop
+            function autoScroll() {
+                if (!isPaused) {
+                    // Logic: If scrolled past half the content (duplicates start), reset to 0
+                    if (container.scrollLeft >= (container.scrollWidth / 2)) {
+                        container.scrollLeft = 0;
+                    } else {
+                        container.scrollLeft += scrollSpeed;
+                    }
+                }
+            }
+
+            // Run scroll every 20ms
+            const scrollInterval = setInterval(autoScroll, 20);
+
+            // Pause on Hover / Touch
+            container.addEventListener('mouseenter', () => isPaused = true);
+            container.addEventListener('mouseleave', () => isPaused = false);
+            container.addEventListener('touchstart', () => isPaused = true);
+            container.addEventListener('touchend', () => setTimeout(() => isPaused = false, 1000));
+        }
+
+        setupAutoScroll('projectScroll');
+        setupAutoScroll('certScroll');
+    </script>
+</body>
+</html>
